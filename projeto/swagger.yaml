@@ -1,0 +1,235 @@
+swagger: "2.0"
+info:
+  description: "APP - EasyFinance - Sistema desenvolvido ao longo da disciplina de Tec Web - UFSJ"
+  version: "1.0.0"
+  title: "EasyFinance"
+  contact:
+    email: "lorena-cjs@hotmail.com"
+host: "petstore.swagger.io"
+basePath: "/v2"
+tags:
+- name: "despesa"
+  description: "Cadastrando suas despesas"
+- name: "usuário"
+  description: "Operações para a gerência do usuário"
+schemes:
+- "http"
+paths:
+  /despesa:
+    post:
+      tags:
+        - "despesa"
+      summary: "Adiciona uma nova despesa no sistema"
+      operationId: "addDespesa"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto despesa a ser adicionado no sistema"
+        required: true
+        schema:
+          $ref: "#/definitions/Despesa"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Despesa"
+  /despesa/{despesaId}:
+    get:
+      tags:
+      - "despesa"
+      summary: "Busca de despesa pelo ID"
+      operationId: "getDespesaById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaId"
+        in: "path"
+        description: "Id of despesa to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid ID supplied"
+        404:
+          description: "Despesa not found"
+    put:
+      tags:
+      - "despesa"
+      summary: "Atualizar uma despesa no sistema"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaId"
+        in: "path"
+        description: "ID that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "body"
+        in: "body"
+        description: "updated despesa object"
+        schema:
+          $ref: "#/definitions/Despesa"
+      responses:
+        200: 
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid ID supplied"
+        404:
+          description: "despesa not found"
+    delete:
+      tags:
+      - "despesa"
+      summary: "Apaga uma despesa"
+      operationId: "deleteDespesa"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaId"
+        in: "path"
+        description: "Despesa ID to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid ID supplied"
+        404:
+          description: "despesa not found"
+  /despesa/despesaYear:
+    get:
+      tags:
+        - "despesa"
+      summary: "Busca de despesa pelo Ano"
+      operationId: "getDespesaByYear"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaYear"
+        in: "query"
+        description: "Year of despesa to return"
+        required: true
+        type: "integer"
+        format: "int16"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid year supplied"
+        404:
+          description: "Despesa not found"
+  /despesa/despesaMonth:
+    get:
+      tags:
+        - "despesa"
+      summary: "Busca de despesa pelo Mês"
+      operationId: "getDespesaByMonth"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaMonth"
+        in: "query"
+        description: "Month of despesa to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid month supplied"
+        404:
+          description: "Despesa not found"
+  /despesa/despesaDay:
+    get:
+      tags:
+        - "despesa"
+      summary: "Busca de despesa pelo Dia"
+      operationId: "getDespesaByDay"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaDay"
+        in: "query"
+        description: "Day of despesa to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid day supplied"
+        404:
+          description: "Despesa not found"  
+  /despesa/despesaCategory:
+    get:
+      tags:
+        - "despesa"
+      summary: "Busca de despesa por Categoria"
+      operationId: "getDespesaByCategory"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "despesaCategory"
+        in: "query"
+        description: "Category of despesa to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Despesa"
+        400:
+          description: "invalid category supplied"
+        404:
+          description: "Despesa not found"  
+
+    
+definitions:
+    Despesa:
+     type: "object"
+     properties:
+      id:
+        type: "integer"
+        format: "int64"
+      year:
+        type: "integer"
+        format: "int16"
+      month:
+        type: "integer"
+        format: "int16"
+      day:
+        type: "integer"
+        format: "int16"
+      category:
+        type: "string"
+      value:
+        type: "number"
+        format: "float32"
+          
+          
+        
+    
