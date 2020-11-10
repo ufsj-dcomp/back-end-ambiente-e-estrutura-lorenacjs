@@ -4,27 +4,17 @@ var app = express();
 var mysql = require("mysql");
 var connection = mysql.createConnection({
 	host:"localhost",
-	user: "tecweb",
-	password: "tecweb",
-	database: "tecdespesaweb"
+	user: 'root',
+ // port: 3000,
+	password: '',
+	database: "tecdespesaweb",
+  port: 3306
 });
+
+
 
 app.use(express.json());
 
-app.get("/despesa", (req, resp) => {
-	console.log("GET - Despesa");
-
-	connection.query("SELECT * FROM despesa", (err, result) => {
-		if (err) {
-  			console.log(err);
-  			resp.status(500).end();
-
-  		} else {
-  			resp.status(200);
-  			resp.json(result);
-  		}
-	});
-});
 
 app.post("/despesa", (req, resp) => {
   var despesa = req.body;
