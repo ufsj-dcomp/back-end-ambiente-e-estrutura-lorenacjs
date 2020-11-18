@@ -2,10 +2,13 @@
   <mat-toolbar-row>
     <span>EasyFinance App</span>
     <div>
-      <a mat-button [routerLink]="'/despesa'">Nova Despesa</a>
-      <a mat-button [routerLink]= "'/consulta'">Consultar</a>
+	
+	<a mat-button [routerLink]= "'/consulta'">Cadastrar Despesa</a>
+      <a mat-button [routerLink]="'/despesa'">Despesas</a>
+      
     </div>
   </mat-toolbar-row>  
 </mat-toolbar>
-
-<router-outlet></router-outlet>
+<div class="container-fluid">
+	<router-outlet></router-outlet>
+</div>

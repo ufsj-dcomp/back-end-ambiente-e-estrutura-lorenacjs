@@ -1,18 +1,17 @@
 var express = require("express");
+var cors = require("cors");
 var app = express();
 
 var mysql = require("mysql");
 var connection = mysql.createConnection({
 	host:"localhost",
 	user: 'root',
- // port: 3000,
 	password: '',
 	database: "tecdespesaweb",
   port: 3306
 });
 
-
-
+app.use(cors());
 app.use(express.json());
 
 
@@ -30,6 +29,22 @@ app.post("/despesa", (req, resp) => {
   		resp.json(result);
   	}
   }); 
+});
+
+app.get("/despesa", (req, resp) => {
+  var despesaId = req.params.despesaId;
+  console.log("GET - Despesas: " + despesaId);
+
+  connection.query("SELECT * FROM despesa", (err, result) => {
+    if (err) {
+      console.log(err);
+      resp.status(500).end();
+
+    } else {
+      resp.status(200);
+      resp.json(result);
+    }
+  });  
 });
 
 app.get("/despesa/:despesaId", (req, resp) => {
