@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { DespesaService } from '../despesa.service';
-
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 export class Despesa {
 	id: number;
@@ -24,11 +25,41 @@ export class Despesa {
 export class DespesaComponent implements OnInit {
 
 	displayedColumns: string[] = ['id', 'year', 'month', 'day', 'category', 'value'];
-	dataSource: Despesa[];
+	dataSource = new MatTableDataSource<Despesa>();
 
-  constructor(private service: DespesaService) { }
+  constructor(private service: DespesaService, public dialog: MatDialog) { }
 
   ngOnInit() {
-  	this.service.getDespesas().subscribe(despesas => this.dataSource = despesas);
+  	this.service.getDespesas().subscribe(despesas => this.dataSource.data = despesas);
   }
+
+  openNewDialog(): void {
+  	const dialogRef = this.dialog.open(MngDespesaDialog, {
+  		width: '750px',
+  		data: new Despesa()
+  	});
+
+  	dialogRef.afterClosed().subscribe(despesa => {
+  		console.log(despesa);
+  		this.service.adicionar(despesa).subscribe(despesaId => {
+  			this.service.getDespesa(despesaId).subscribe(newDespesa => {
+  				this.dataSource.data = this.dataSource.data.concat(newDespesa);
+  			})
+  		});
+  	})
+  }
+}
+
+@Component({
+	selector: 'dialog-mng-despesa',
+	templateUrl: 'dialog-mng-despesa.html'
+})
+export class MngDespesaDialog {
+
+	constructor(public dialogRef: MatDialogRef<MngDespesaDialog>,
+	 @Inject(MAT_DIALOG_DATA) public data: Despesa) {}
+
+	onNoClick(): void {
+		this.dialogRef.close();
+	}
 }

@@ -26,7 +26,7 @@ app.post("/despesa", (req, resp) => {
 
   	} else {
   		resp.status(200);
-  		resp.json(result);
+  		resp.json(result.insertId);
   	}
   }); 
 });

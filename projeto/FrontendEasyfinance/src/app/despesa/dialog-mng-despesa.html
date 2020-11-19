@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Despesa</h1> 
+<div mat-dialog-content>
+    <div class="row">
+        <mat-form-field style= "width: 100%;">
+            <mat-label>Ano</mat-label>
+            <input matInput [(ngModel)]="data.year">
+        </mat-form-field>
+    </div> 
+    <div class="row">
+        <mat-form-field style= "width: 100%;">
+            <mat-label>Mês</mat-label>
+            <input matInput [(ngModel)]="data.month">
+        </mat-form-field>
+    </div> 
+    <div class="row">
+        <mat-form-field style= "width: 100%;">
+            <mat-label>Dia</mat-label>
+            <input matInput [(ngModel)]="data.day">
+        </mat-form-field>
+    </div> 
+    <div class="row">
+        <div class="col-8">
+            <mat-form-field style="width: 100%;">
+                <mat-label>Categoria</mat-label>
+                <input matInput [(ngModel)]= "data.category">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <mat-form-field style= "width: 100%;">
+            <mat-label>Valor</mat-label>
+            <input matInput [(ngModel)]="data.value">
+        </mat-form-field>
+    </div> 
+    
+</div>
+
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Salvar</button>
+</div>
