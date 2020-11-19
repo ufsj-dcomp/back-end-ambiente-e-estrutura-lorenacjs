@@ -24,7 +24,7 @@ export class Despesa {
 })
 export class DespesaComponent implements OnInit {
 
-	displayedColumns: string[] = ['id', 'year', 'month', 'day', 'category', 'value'];
+	displayedColumns: string[] = ['id', 'year', 'month', 'day', 'category', 'value', 'acoes'];
 	dataSource = new MatTableDataSource<Despesa>();
 
   constructor(private service: DespesaService, public dialog: MatDialog) { }
@@ -46,6 +46,27 @@ export class DespesaComponent implements OnInit {
   				this.dataSource.data = this.dataSource.data.concat(newDespesa);
   			})
   		});
+  	})
+  }
+
+  openEditDialog(despesa: Despesa): void {
+  	const dialogRef = this.dialog.open(MngDespesaDialog, {
+  		width: '750px',
+  		data: despesa
+  	});
+
+  	dialogRef.afterClosed().subscribe(despesa => {
+  			this.service.editar(despesa).subscribe(_ => {
+  			this.dataSource.data =	this.dataSource.data.map(oldDespesa => {
+  				if (oldDespesa.id == despesa.id) return despesa;
+  			});
+  		});
+  	})
+  }
+
+  excluir(despesa: Despesa): void {
+  	this.service.remover(despesa.id).subscribe(_ => {
+  			this.dataSource.data =	this.dataSource.data.filter(oldDespesa => oldDespesa.id != despesa.id);
   	})
   }
 }

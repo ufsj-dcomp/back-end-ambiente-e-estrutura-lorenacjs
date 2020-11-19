@@ -21,4 +21,12 @@ export class DespesaService {
 	adicionar(despesa: Despesa): Observable<any>{
 		return this.http.post("http://localhost:3000/despesa", despesa);
 	}
+
+	editar(despesa: Despesa): Observable<any>{
+		return this.http.put("http://localhost:3000/despesa/" + despesa.id, despesa);
+	}
+
+	remover(despesaId: number): Observable<any>{
+		return this.http.delete("http://localhost:3000/despesa/" + despesaId);
+	}
 }
