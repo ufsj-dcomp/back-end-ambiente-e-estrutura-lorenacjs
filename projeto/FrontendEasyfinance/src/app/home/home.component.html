@@ -1,0 +1,13 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>EasyFinance App</span>
+    <div>
+	<a mat-button [routerLink]="'/home/despesa'">Despesas</a>
+	<a mat-button [routerLink]= "'/home/consulta'">Filtrar Despesa</a>         
+    </div>
+  </mat-toolbar-row>  
+</mat-toolbar>
+
+<div class="container-fluid">
+	<router-outlet></router-outlet>
+</div>

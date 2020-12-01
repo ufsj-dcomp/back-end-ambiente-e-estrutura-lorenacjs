@@ -12,14 +12,20 @@ import { MatInputModule } from '@angular/material/input';
 import { DespesaComponent, MngDespesaDialog } from './despesa/despesa.component';
 import { ConsultaComponent } from './consulta/consulta.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+import { HomeComponent } from './home/home.component';
+import { AuthComponent } from './auth/auth.component';
+import { Globals } from './globals/globals'; 
+import { AuthGuard } from './auth/auth.guard';   
 
 @NgModule({
   declarations: [
     AppComponent,
     DespesaComponent,
     ConsultaComponent,
-    MngDespesaDialog
+    MngDespesaDialog,
+    HomeComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +41,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule
   ],
   entryComponents: [MngDespesaDialog],
-  providers: [],
+  providers: [AuthGuard, Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

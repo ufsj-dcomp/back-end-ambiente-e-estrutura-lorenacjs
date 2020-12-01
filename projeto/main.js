@@ -1,5 +1,6 @@
 var express = require("express");
 var cors = require("cors");
+var jwt = require('jsonwebtoken');
 var app = express();
 
 var mysql = require("mysql");
@@ -13,6 +14,41 @@ var connection = mysql.createConnection({
 
 app.use(cors());
 app.use(express.json());
+
+app.post('/auth', (req,resp) => {
+  var user = req.body;
+
+  connection.query("SELECT * FROM usuario WHERE nome = ? and senha = ?", [user.nome, user.senha] , (err, result) =>{
+    var usuario = result[0];
+
+    if(result.length == 0) {
+        resp.status(401);
+        resp.send({token: null, usuario: usuario, success: false});
+    } else {
+      let token = jwt.sign({id: usuario.nome}, 'tecdespesaweb', {expiresIn: 6000});
+      resp.status(200);
+      resp.send({token: token, usuario:usuario, success: true});
+    }
+
+  });
+
+});
+
+verifica_token = (req, resp, next) => {
+  var token = req.headers['x-access-token'];
+
+  if(!token){
+    return resp.status(401).end();
+  }
+
+  jwt.verify(token, 'tecdespesaweb', (err, decoded) => {
+    if (err)
+      return resp.status(401).end();
+
+    req.usuario = decoded.id;
+    next();
+  });
+}
 
 
 app.post("/despesa", (req, resp) => {
@@ -31,7 +67,7 @@ app.post("/despesa", (req, resp) => {
   }); 
 });
 
-app.get("/despesa", (req, resp) => {
+app.get("/despesa", verifica_token, (req, resp) => {
   var despesaId = req.params.despesaId;
   console.log("GET - Despesas: " + despesaId);
 
@@ -47,7 +83,7 @@ app.get("/despesa", (req, resp) => {
   });  
 });
 
-app.get("/despesa/:despesaId", (req, resp) => {
+app.get("/despesa/:despesaId", verifica_token, (req, resp) => {
   var despesaId = req.params.despesaId;
   console.log("GET - DespesaId: " + despesaId);
 
@@ -63,7 +99,7 @@ app.get("/despesa/:despesaId", (req, resp) => {
   });  
 });
 
-app.put("/despesa/:despesaId", (req, resp) => {
+app.put("/despesa/:despesaId", verifica_token, (req, resp) => {
   var despesaId = req.params.despesaId;
   var despesa = req.body();
   console.log("PUT - DespesaId: " + despesaId);
@@ -79,7 +115,7 @@ app.put("/despesa/:despesaId", (req, resp) => {
   });
 });
 
-app.delete("/despesa/:despesaId", (req,resp) => {
+app.delete("/despesa/:despesaId", verifica_token, (req,resp) => {
   var despesaId = req.params.despesaId;
   console.log("DELETE - DespesaId: " + despesaId);
 
